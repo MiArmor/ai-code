@@ -28,7 +28,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 获取加密密码
-     * @param userPassword
+     * @param userPassword 用户原始密码
      * @return
      */
     String getEncryptPassword(String userPassword);
