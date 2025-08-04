@@ -105,7 +105,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>  implements U
         queryWrapper.eq("userPassword", encryptPassword);
         User user = this.mapper.selectOneByQuery(queryWrapper);
         if(user == null){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户账号不存在");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户名或密码错误");
         }
         //4.记录用户的登录状态
         request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, user);
@@ -173,7 +173,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>  implements U
         String sortField = userQueryRequest.getSortField();
         String sortOrder = userQueryRequest.getSortOrder();
         return QueryWrapper.create()
-                .eq("id", id)
+//                .eq("id", id)
                 .eq("userRole", userRole)
                 .like("userAccount", userAccount)
                 .like("userName", userName)
