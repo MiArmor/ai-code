@@ -4,7 +4,9 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;
 import com.xielaoban.aicode.domain.dto.app.AppQueryRequest;
 import com.xielaoban.aicode.domain.entity.App;
+import com.xielaoban.aicode.domain.entity.User;
 import com.xielaoban.aicode.domain.vo.app.AppVO;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -20,4 +22,16 @@ public interface AppService extends IService<App> {
     QueryWrapper getQueryWrapper(AppQueryRequest appQueryRequest);
 
     List<AppVO> getAppVOList(List<App> appList);
+
+    /**
+     * 流式输出
+     *
+     * @param appId 应用id
+     * @param message 用户消息
+     * @param loginUser 当前登录用户
+     * @return AI生成结果流
+     */
+    Flux<String> chatToGenCode(Long appId, String message, User loginUser);
+
+    String deployApp(Long appId, User loginUser);
 }
