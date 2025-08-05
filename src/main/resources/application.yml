@@ -1,11 +1,39 @@
 spring:
   application:
     name: ai-code
+  profiles:
+    active: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ai_code
+    username: ${xlb.db.user}
+    password: ${xlb.db.password}
+# langchain4j配置
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: ${xlb.deepseek.apikey}
+      base-url: https://api.deepseek.com
+      model-name: deepseek-chat
+      log-requests: true
+      log-responses: true
+      max-tokens: 8192
+      strict-json-schema: true
+      response-format: json_object # 结构化输出
+      temperature: 0.0 # 代码生成类任务参数
+    streaming-chat-model: # 配置SSE模式，流式输出
+      base-url: https://api.deepseek.com
+      api-key: ${xlb.deepseek.apikey}
+      model-name: deepseek-chat
+      log-requests: true
+      log-responses: true
+      max-tokens: 8192
+      temperature: 0.0 # 适合代码生成类任务
+
 server:
   port: 9091
   servlet:
     context-path: /api
-
 # springdoc-openapi
 springdoc:
   group-configs:
@@ -17,7 +45,11 @@ knife4j:
   setting:
     language: zh_cn
 
+mybatis-flex:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
   level:
     web: info
+
