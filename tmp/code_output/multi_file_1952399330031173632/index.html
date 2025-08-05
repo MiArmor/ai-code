@@ -1,0 +1,46 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园留言板</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>校园留言板</h1>
+            <p>分享你的校园生活点滴</p>
+        </header>
+
+        <main>
+            <section class="message-form">
+                <h2>发表留言</h2>
+                <form id="messageForm">
+                    <div class="form-group">
+                        <label for="name">昵称</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">留言内容</label>
+                        <textarea id="content" rows="4" required></textarea>
+                    </div>
+                    <button type="submit">提交</button>
+                </form>
+            </section>
+
+            <section class="message-list">
+                <h2>最新留言</h2>
+                <div id="messagesContainer"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2025 校园留言板 - 所有权利保留</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
