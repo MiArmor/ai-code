@@ -17,6 +17,7 @@
 | Hutool | 工具类界的瑞士军刀 |
 | Knife4j | Swagger 的美颜版 |
 | Maven | 自动下载依赖，像点外卖一样方便 |
+| Langchain4j | 早该学了 |
 
 ---
 
