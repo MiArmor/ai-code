@@ -1,0 +1,23 @@
+package com.xielaoban.aicode.service;
+
+import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.core.service.IService;
+import com.xielaoban.aicode.domain.dto.app.AppQueryRequest;
+import com.xielaoban.aicode.domain.entity.App;
+import com.xielaoban.aicode.domain.vo.app.AppVO;
+
+import java.util.List;
+
+/**
+ * 应用 服务层。
+ *
+ * @author <a href="https://github.com/MiArmor">Mi_amor</a>
+ */
+public interface AppService extends IService<App> {
+
+    AppVO getAppVO(App app);
+
+    QueryWrapper getQueryWrapper(AppQueryRequest appQueryRequest);
+
+    List<AppVO> getAppVOList(List<App> appList);
+}
