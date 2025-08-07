@@ -1,6 +1,7 @@
 package com.xielaoban.aicode.core;
 
 import com.xielaoban.aicode.ai.AiCodeGeneratorService;
+import com.xielaoban.aicode.ai.AiCodeGenetatorServiceFactory;
 import com.xielaoban.aicode.ai.enums.CodeGenTypeEnum;
 import com.xielaoban.aicode.ai.model.HtmlCodeGenResult;
 import com.xielaoban.aicode.ai.model.MultiFileCodeGenResult;
@@ -22,8 +23,10 @@ import java.io.File;
 @Slf4j
 public class AiCodeGeneratorFacade {
 
+//    @Resource
+//    private AiCodeGeneratorService aiCodeGeneratorService;
     @Resource
-    private AiCodeGeneratorService aiCodeGeneratorService;
+    private AiCodeGenetatorServiceFactory aiCodeGenetatorServiceFactory;
 
     /**
      * 统一入口：根据类型生成并保存代码
@@ -37,6 +40,9 @@ public class AiCodeGeneratorFacade {
         if (codeGenTypeEnum == null) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "生成类型为空");
         }
+        // 根据 appId 获取对应的 AI 服务实例
+        AiCodeGeneratorService aiCodeGeneratorService = aiCodeGenetatorServiceFactory.getAiCodeGeneratorService(appId);
+
         return switch (codeGenTypeEnum) {
             case HTML -> {
                 HtmlCodeGenResult result = aiCodeGeneratorService.generateHtmlCode(userMessage);
@@ -64,6 +70,8 @@ public class AiCodeGeneratorFacade {
         if (codeGenTypeEnum == null) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "生成类型为空");
         }
+        // 根据 appId 获取对应的 AI 服务实例
+        AiCodeGeneratorService aiCodeGeneratorService = aiCodeGenetatorServiceFactory.getAiCodeGeneratorService(appId);
         return switch (codeGenTypeEnum) {
             case HTML -> {
                 Flux<String> codeStream = aiCodeGeneratorService.generateHtmlCodeStream(userMessage);
