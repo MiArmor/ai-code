@@ -19,4 +19,9 @@ public class AppUpdateRequest implements Serializable {
      */
     private String appName;
 
+    /**
+     * 封面
+     */
+    private String cover;
+
 }

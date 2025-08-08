@@ -105,6 +105,7 @@ public class AppController {
         App app = new App();
         app.setId(id);
         app.setAppName(appUpdateRequest.getAppName());
+        app.setCover(appUpdateRequest.getCover());
         app.setEditTime(LocalDateTime.now()); // 设置编辑时间
         boolean result = appService.updateById(app);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "更新应用失败");
