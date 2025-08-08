@@ -2,7 +2,9 @@ package com.xielaoban.aicode.ai;
 
 import com.xielaoban.aicode.ai.model.HtmlCodeGenResult;
 import com.xielaoban.aicode.ai.model.MultiFileCodeGenResult;
+import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
 import reactor.core.publisher.Flux;
 
 public interface AiCodeGeneratorService {
@@ -45,4 +47,16 @@ public interface AiCodeGeneratorService {
      */
     @SystemMessage(fromResource = "prompt/multi-file-prompt.txt")
     Flux<String> generateMultiFileCodeStream(String userMessage);
+
+
+    /**
+     * 生成 Vue 项目代码（流式）
+     *
+     * @param userMessage 用户消息
+     * @param appId    应用id
+     * @return 生成过程的流式响应
+     */
+    @SystemMessage(fromResource = "prompt/vue-project-prompt.txt")
+    Flux<String> generateVueProjectCodeStream(@MemoryId long appId, @UserMessage String userMessage);
+
 }

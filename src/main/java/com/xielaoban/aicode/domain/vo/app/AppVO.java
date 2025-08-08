@@ -1,5 +1,6 @@
 package com.xielaoban.aicode.domain.vo.app;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xielaoban.aicode.domain.vo.user.UserVO;
 import lombok.Data;
 
@@ -58,6 +59,7 @@ public class AppVO implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createTime;
 
     /**
