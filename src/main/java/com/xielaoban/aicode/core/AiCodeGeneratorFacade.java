@@ -1,14 +1,21 @@
 package com.xielaoban.aicode.core;
 
+import cn.hutool.json.JSONUtil;
 import com.xielaoban.aicode.ai.AiCodeGeneratorService;
 import com.xielaoban.aicode.ai.AiCodeGenetatorServiceFactory;
 import com.xielaoban.aicode.ai.enums.CodeGenTypeEnum;
 import com.xielaoban.aicode.ai.model.HtmlCodeGenResult;
 import com.xielaoban.aicode.ai.model.MultiFileCodeGenResult;
+import com.xielaoban.aicode.ai.model.message.AiResponseMessage;
+import com.xielaoban.aicode.ai.model.message.ToolExecutedMessage;
+import com.xielaoban.aicode.ai.model.message.ToolRequestMessage;
 import com.xielaoban.aicode.core.filesave.CodeFileSaverExecutor;
 import com.xielaoban.aicode.core.parser.CodeParserExecutor;
 import com.xielaoban.aicode.exception.BusinessException;
 import com.xielaoban.aicode.exception.ErrorCode;
+import dev.langchain4j.model.chat.response.ChatResponse;
+import dev.langchain4j.service.TokenStream;
+import dev.langchain4j.service.tool.ToolExecution;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -119,6 +126,39 @@ public class AiCodeGeneratorFacade {
             }
         });
     }
+
+
+    /**
+     * 将 TokenStream 转换为 Flux<String>，并传递工具调用信息
+     *
+     * @param tokenStream TokenStream 对象
+     * @return Flux<String> 流式响应
+     */
+    private Flux<String> processTokenStream(TokenStream tokenStream) {
+        return Flux.create(sink -> {
+            tokenStream.onPartialResponse((String partialResponse) -> {
+                        AiResponseMessage aiResponseMessage = new AiResponseMessage(partialResponse);
+                        sink.next(JSONUtil.toJsonStr(aiResponseMessage));
+                    })
+                    .onPartialToolExecutionRequest((index, toolExecutionRequest) -> {
+                        ToolRequestMessage toolRequestMessage = new ToolRequestMessage(toolExecutionRequest);
+                        sink.next(JSONUtil.toJsonStr(toolRequestMessage));
+                    })
+                    .onToolExecuted((ToolExecution toolExecution) -> {
+                        ToolExecutedMessage toolExecutedMessage = new ToolExecutedMessage(toolExecution);
+                        sink.next(JSONUtil.toJsonStr(toolExecutedMessage));
+                    })
+                    .onCompleteResponse((ChatResponse response) -> {
+                        sink.complete();
+                    })
+                    .onError((Throwable error) -> {
+                        error.printStackTrace();
+                        sink.error(error);
+                    })
+                    .start();
+        });
+    }
+
 
 
 }
