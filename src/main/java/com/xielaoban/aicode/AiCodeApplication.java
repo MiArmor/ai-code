@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 
-@EnableAspectJAutoProxy(exposeProxy = true)
+//@EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootApplication(exclude = {RedisEmbeddingStoreAutoConfiguration.class})
 @MapperScan("com.xielaoban.aicode.mapper")
 public class AiCodeApplication {

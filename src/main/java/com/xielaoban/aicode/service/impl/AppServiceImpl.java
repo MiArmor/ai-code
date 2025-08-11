@@ -52,14 +52,16 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
     private final AiCodeGeneratorFacade aiCodeGeneratorFacade;
     private final ChatHistoryService chatHistoryService;
     private final StreamHandlerExecutor streamHandlerExecutor;
-    @Resource
-    private VueProjectBuilder vueProjectBuilder;
+    private final VueProjectBuilder vueProjectBuilder;
 
-    public AppServiceImpl(UserService userService, AiCodeGeneratorFacade aiCodeGeneratorFacade, ChatHistoryService chatHistoryService, StreamHandlerExecutor streamHandlerExecutor) {
+    public AppServiceImpl(UserService userService, AiCodeGeneratorFacade aiCodeGeneratorFacade,
+                          ChatHistoryService chatHistoryService, StreamHandlerExecutor streamHandlerExecutor,
+                          VueProjectBuilder vueProjectBuilder) {
         this.userService = userService;
         this.aiCodeGeneratorFacade = aiCodeGeneratorFacade;
         this.chatHistoryService = chatHistoryService;
         this.streamHandlerExecutor = streamHandlerExecutor;
+        this.vueProjectBuilder = vueProjectBuilder;
     }
 
     @Override

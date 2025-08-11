@@ -1,4 +1,8 @@
 spring:
+  # 避免类加载器冲突，可配置参数-Dspring.devtools.restart.enabled=false
+  devtools:
+    restart:
+      enabled: false
   # redis配置信息
   data:
     redis:
@@ -19,6 +23,7 @@ spring:
   session:
     store-type: redis
     timeout: 2592000 # 30天过期时间
+
 # langchain4j配置
 langchain4j:
   open-ai:
