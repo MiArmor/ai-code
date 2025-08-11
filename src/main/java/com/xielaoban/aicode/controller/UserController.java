@@ -30,7 +30,7 @@ import java.util.List;
  * @author <a href="https://github.com/MiArmor">Mi_amor</a>
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Resource

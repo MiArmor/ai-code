@@ -2,7 +2,7 @@ package com.xielaoban.aicode.core;
 
 import cn.hutool.json.JSONUtil;
 import com.xielaoban.aicode.ai.AiCodeGeneratorService;
-import com.xielaoban.aicode.ai.AiCodeGenetatorServiceFactory;
+import com.xielaoban.aicode.ai.AiCodeGeneratorServiceFactory;
 import com.xielaoban.aicode.ai.enums.CodeGenTypeEnum;
 import com.xielaoban.aicode.ai.model.HtmlCodeGenResult;
 import com.xielaoban.aicode.ai.model.MultiFileCodeGenResult;
@@ -33,7 +33,7 @@ public class AiCodeGeneratorFacade {
 //    @Resource
 //    private AiCodeGeneratorService aiCodeGeneratorService;
     @Resource
-    private AiCodeGenetatorServiceFactory aiCodeGenetatorServiceFactory;
+    private AiCodeGeneratorServiceFactory aiCodeGeneratorServiceFactory;
 
     /**
      * 统一入口：根据类型生成并保存代码
@@ -48,7 +48,7 @@ public class AiCodeGeneratorFacade {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "生成类型为空");
         }
         // 根据 appId和codeGenType 获取对应的 AI 服务实例
-        AiCodeGeneratorService aiCodeGeneratorService = aiCodeGenetatorServiceFactory.getAiCodeGeneratorService(appId, codeGenTypeEnum);
+        AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId, codeGenTypeEnum);
 
         return switch (codeGenTypeEnum) {
             case HTML -> {
@@ -78,7 +78,7 @@ public class AiCodeGeneratorFacade {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "生成类型为空");
         }
         // 根据 appId 获取对应的 AI 服务实例
-        AiCodeGeneratorService aiCodeGeneratorService = aiCodeGenetatorServiceFactory.getAiCodeGeneratorService(appId, codeGenTypeEnum);
+        AiCodeGeneratorService aiCodeGeneratorService = aiCodeGeneratorServiceFactory.getAiCodeGeneratorService(appId, codeGenTypeEnum);
         return switch (codeGenTypeEnum) {
             case HTML -> {
                 Flux<String> codeStream = aiCodeGeneratorService.generateHtmlCodeStream(userMessage);
@@ -89,8 +89,8 @@ public class AiCodeGeneratorFacade {
                 yield processCodeStream(codeStream, CodeGenTypeEnum.MULTI_FILE, appId);
             }
             case VUE_PROJECT -> {
-                Flux<String> codeStream = aiCodeGeneratorService.generateVueProjectCodeStream(appId,userMessage);
-                yield processCodeStream(codeStream, CodeGenTypeEnum.MULTI_FILE, appId);
+                TokenStream codeStream = aiCodeGeneratorService.generateVueProjectCodeStream(appId, userMessage);
+                yield processTokenStream(codeStream);
             }
             default -> {
                 String errorMessage = "不支持的生成类型：" + codeGenTypeEnum.getValue();

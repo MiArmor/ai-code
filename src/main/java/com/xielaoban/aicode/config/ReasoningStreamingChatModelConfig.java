@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "langchain4j.open-ai.chat-model")
+@ConfigurationProperties(prefix = "langchain4j.open-ai.streaming-chat-model")
 @Data
 public class ReasoningStreamingChatModelConfig {
 

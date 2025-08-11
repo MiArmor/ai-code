@@ -40,7 +40,7 @@ import java.util.Map;
  * @author <a href="https://github.com/MiArmor">Mi_amor</a>
  */
 @RestController
-@RequestMapping("/apps")
+@RequestMapping("/app")
 public class AppController {
 
     @Resource
@@ -74,7 +74,7 @@ public class AppController {
         app.setAppName(appName);
         app.setInitPrompt(initPrompt);
         app.setUserId(loginUser.getId());
-        app.setCodeGenType(CodeGenTypeEnum.HTML.getValue());
+        app.setCodeGenType(CodeGenTypeEnum.VUE_PROJECT.getValue());
         boolean saveResult = appService.save(app);
         ThrowUtils.throwIf(!saveResult, ErrorCode.OPERATION_ERROR, "保存应用失败");
         return ResultUtils.success(app.getId());
@@ -312,7 +312,7 @@ public class AppController {
         //转换为 ServerSentEvent 流
         return stringFlux.map(content -> {
             // 将内容包装成JSON对象
-            Map<String, String> stringMap = Map.of("v", content);
+            Map<String, String> stringMap = Map.of("d", content);
             String jsonData = JSONUtil.toJsonStr(stringMap);
             return ServerSentEvent.<String>builder().data(jsonData).build();
         }).concatWith(Mono.just(

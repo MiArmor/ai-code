@@ -1,13 +1,16 @@
 package com.xielaoban.aicode.core.builder;
 
 import cn.hutool.core.util.RuntimeUtil;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
+@Component
 public class VueProjectBuilder {
 
 
