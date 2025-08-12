@@ -2,6 +2,7 @@ package com.xielaoban.aicode.service;
 
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;
+import com.xielaoban.aicode.domain.dto.app.AppAddRequest;
 import com.xielaoban.aicode.domain.dto.app.AppQueryRequest;
 import com.xielaoban.aicode.domain.entity.App;
 import com.xielaoban.aicode.domain.entity.User;
@@ -34,4 +35,9 @@ public interface AppService extends IService<App> {
     Flux<String> chatToGenCode(Long appId, String message, User loginUser);
 
     String deployApp(Long appId, User loginUser);
+
+    Long createApp(AppAddRequest appAddRequest, User loginUser);
+    
+
+    void generateAppScreenshotAsync(Long appId, String appUrl);
 }
