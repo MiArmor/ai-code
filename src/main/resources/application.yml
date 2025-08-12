@@ -34,8 +34,8 @@ langchain4j:
       log-requests: true
       log-responses: true
       max-tokens: 8192
-      strict-json-schema: true
-      response-format: json_object # 结构化输出
+#      strict-json-schema: true
+#      response-format: json_object # 结构化输出
       temperature: 0.0 # 代码生成类任务参数
     streaming-chat-model: # 配置SSE模式，流式输出
       base-url: https://api.deepseek.com
@@ -54,6 +54,15 @@ server:
     session:
       cookie:
         max-age: 2592000
+
+# 腾讯云cos配置
+cos:
+  client:
+    host: ${xlb.cos.host}
+    secretId: ${xlb.cos.secretId}
+    secretKey: ${xlb.cos.secretKey}
+    region: ${xlb.cos.region}
+    bucket: ${xlb.cos.bucket}
 
 # springdoc-openapi
 springdoc:
