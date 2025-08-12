@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.xielaoban.aicode.ai.enums.CodeGenTypeEnum;
 import com.xielaoban.aicode.ai.tools.FileWriteTool;
+import com.xielaoban.aicode.ai.tools.ToolManager;
 import com.xielaoban.aicode.exception.BusinessException;
 import com.xielaoban.aicode.exception.ErrorCode;
 import com.xielaoban.aicode.service.ChatHistoryService;
@@ -41,6 +42,9 @@ public class AiCodeGeneratorServiceFactory {
 
     @Resource
     private ChatHistoryService chatHistoryService;
+
+    @Resource
+    private ToolManager toolManager;
 
 
     /**
@@ -105,7 +109,7 @@ public class AiCodeGeneratorServiceFactory {
             case VUE_PROJECT -> AiServices.builder(AiCodeGeneratorService.class)
                     .streamingChatModel(reasoningStreamingChatModel)
                     .chatMemoryProvider(memoryId -> chatMemory)
-                    .tools(new FileWriteTool())
+                    .tools(toolManager.getAllTools())
                     // 处理工具调用幻觉问题
                     .hallucinatedToolNameStrategy(toolExecutionRequest ->
                             ToolExecutionResultMessage.from(toolExecutionRequest,
