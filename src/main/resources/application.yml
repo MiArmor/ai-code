@@ -10,6 +10,7 @@ spring:
       port: 6379
       password:
       ttl: 3600
+      database: 0
   application:
     name: ai-code
   profiles:
@@ -28,22 +29,39 @@ spring:
 langchain4j:
   open-ai:
     chat-model:
+      base-url: https://api.deepseek.com
+      api-key: ${xlb.deepseek.apikey}
+      model-name: deepseek-chat
+      max-tokens: 8192
+      log-requests: true
+      log-responses: true
+      max-retries: 3
+    #      strict-json-schema: true
+    #      response-format: json_object # 结构化输出
+    # 通用流式聊天 AI 模型配置
+    streaming-chat-model:
+      base-url: https://api.deepseek.com
+      api-key: ${xlb.deepseek.apikey}
+      model-name: deepseek-chat
+      max-tokens: 8192
+      log-requests: true
+      log-responses: true
+    # 智能路由 AI 模型配置
+    routing-chat-model:
       api-key: ${xlb.deepseek.apikey}
       base-url: https://api.deepseek.com
       model-name: deepseek-chat
       log-requests: true
       log-responses: true
-      max-tokens: 8192
-#      strict-json-schema: true
-#      response-format: json_object # 结构化输出
-      temperature: 0.0 # 代码生成类任务参数
-    streaming-chat-model: # 配置SSE模式，流式输出
+      max-tokens: 100
+    # 推理 AI 模型配置（用于复杂的推理任务）
+    reasoning-streaming-chat-model: # 配置SSE模式，流式输出
       base-url: https://api.deepseek.com
       api-key: ${xlb.deepseek.apikey}
-      model-name: deepseek-chat
+      model-name: deepseek-reasoner
       log-requests: true
       log-responses: true
-      max-tokens: 8192
+      max-tokens: 32768
       temperature: 0.0 # 适合代码生成类任务
 
 server:
