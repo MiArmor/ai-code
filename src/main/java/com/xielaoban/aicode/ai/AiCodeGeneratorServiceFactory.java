@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.xielaoban.aicode.ai.enums.CodeGenTypeEnum;
 import com.xielaoban.aicode.ai.guardrail.PromptSafetyInputGuardrail;
+import com.xielaoban.aicode.ai.guardrail.RetryOutputGuardrail;
 import com.xielaoban.aicode.ai.tools.FileWriteTool;
 import com.xielaoban.aicode.ai.tools.ToolManager;
 import com.xielaoban.aicode.exception.BusinessException;
@@ -109,22 +110,26 @@ public class AiCodeGeneratorServiceFactory {
                         .streamingChatModel(reasoningStreamingChatModel)
                         .chatMemoryProvider(memoryId -> chatMemory)
                         .tools(toolManager.getAllTools())
+                        .maxSequentialToolsInvocations(30) // 最大工具调用次数
                         // 处理工具调用幻觉问题
                         .hallucinatedToolNameStrategy(toolExecutionRequest ->
                                 ToolExecutionResultMessage.from(toolExecutionRequest,
                                         "Error: there is no tool called " + toolExecutionRequest.name())
                         )
-                        .inputGuardrails(new PromptSafetyInputGuardrail()) // 护轨机制
+                        .inputGuardrails(new PromptSafetyInputGuardrail()) // 护轨机制、输入护轨
+                        .outputGuardrails(new RetryOutputGuardrail()) // 输出护轨
                         .build();
             }
             // HTML 和 多文件生成，使用流式对话模型
             case HTML, MULTI_FILE -> {
                 StreamingChatModel openAiStreamingChatModel = SpringContextUtil.getBean("streamingChatModelPrototype", StreamingChatModel.class);
                 yield AiServices.builder(AiCodeGeneratorService.class)
-                    .chatModel(chatModel)
-                    .streamingChatModel(openAiStreamingChatModel)
-                    .chatMemory(chatMemory)
-                    .build();
+                        .chatModel(chatModel)
+                        .streamingChatModel(openAiStreamingChatModel)
+                        .inputGuardrails(new PromptSafetyInputGuardrail()) // 输入护轨
+                        .outputGuardrails(new RetryOutputGuardrail()) // 输出护轨
+                        .chatMemory(chatMemory)
+                        .build();
             }
             default ->
                     throw new BusinessException(ErrorCode.SYSTEM_ERROR, "不支持的代码生成类型: " + codeGenType.getValue());
