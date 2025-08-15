@@ -116,8 +116,8 @@ public class AiCodeGeneratorServiceFactory {
                                 ToolExecutionResultMessage.from(toolExecutionRequest,
                                         "Error: there is no tool called " + toolExecutionRequest.name())
                         )
-                        .inputGuardrails(new PromptSafetyInputGuardrail()) // 护轨机制、输入护轨
-                        .outputGuardrails(new RetryOutputGuardrail()) // 输出护轨
+                        .inputGuardrails(new PromptSafetyInputGuardrail()) // 护轨机制：添加输入护轨
+//                        .outputGuardrails(new RetryOutputGuardrail()) // 输出护轨，会影响流式输出
                         .build();
             }
             // HTML 和 多文件生成，使用流式对话模型
@@ -126,8 +126,8 @@ public class AiCodeGeneratorServiceFactory {
                 yield AiServices.builder(AiCodeGeneratorService.class)
                         .chatModel(chatModel)
                         .streamingChatModel(openAiStreamingChatModel)
-                        .inputGuardrails(new PromptSafetyInputGuardrail()) // 输入护轨
-                        .outputGuardrails(new RetryOutputGuardrail()) // 输出护轨
+                        .inputGuardrails(new PromptSafetyInputGuardrail()) // 添加输入护轨
+//                        .outputGuardrails(new RetryOutputGuardrail()) // 输出护轨
                         .chatMemory(chatMemory)
                         .build();
             }
