@@ -3,6 +3,7 @@ package com.xielaoban.aicode.ai;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.xielaoban.aicode.ai.enums.CodeGenTypeEnum;
+import com.xielaoban.aicode.ai.guardrail.PromptSafetyInputGuardrail;
 import com.xielaoban.aicode.ai.tools.FileWriteTool;
 import com.xielaoban.aicode.ai.tools.ToolManager;
 import com.xielaoban.aicode.exception.BusinessException;
@@ -105,15 +106,16 @@ public class AiCodeGeneratorServiceFactory {
             case VUE_PROJECT -> {
                 StreamingChatModel reasoningStreamingChatModel = SpringContextUtil.getBean("reasoningStreamingChatModelPrototype", StreamingChatModel.class);
                 yield AiServices.builder(AiCodeGeneratorService.class)
-                    .streamingChatModel(reasoningStreamingChatModel)
-                    .chatMemoryProvider(memoryId -> chatMemory)
-                    .tools(toolManager.getAllTools())
-                    // 处理工具调用幻觉问题
-                    .hallucinatedToolNameStrategy(toolExecutionRequest ->
-                            ToolExecutionResultMessage.from(toolExecutionRequest,
-                                    "Error: there is no tool called " + toolExecutionRequest.name())
-                    )
-                    .build();
+                        .streamingChatModel(reasoningStreamingChatModel)
+                        .chatMemoryProvider(memoryId -> chatMemory)
+                        .tools(toolManager.getAllTools())
+                        // 处理工具调用幻觉问题
+                        .hallucinatedToolNameStrategy(toolExecutionRequest ->
+                                ToolExecutionResultMessage.from(toolExecutionRequest,
+                                        "Error: there is no tool called " + toolExecutionRequest.name())
+                        )
+                        .inputGuardrails(new PromptSafetyInputGuardrail()) // 护轨机制
+                        .build();
             }
             // HTML 和 多文件生成，使用流式对话模型
             case HTML, MULTI_FILE -> {
