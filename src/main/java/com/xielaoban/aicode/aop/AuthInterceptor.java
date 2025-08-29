@@ -52,6 +52,8 @@ public class AuthInterceptor {
         if (UserRoleEnum.ADMIN.equals(mustRoleEnum) && !UserRoleEnum.ADMIN.equals(userRoleEnum)) {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
         }
+        //TODO 以后可能会有更多权限，继续补充(vip用户权限)
+
         // 通过权限校验，放行
         return joinPoint.proceed();
     }
