@@ -28,13 +28,14 @@ public class WebScreenshotUtils {
 
     // 静态代码块执行，确保驱动在整个应用的生命周期内只初始化一次
     static {
-        System.setProperty("wdm.timeout", "300");
-        System.setProperty("wdm.retryCount", "3");
-        // 设置国内镜像
-        System.setProperty("wdm.chromeDownloadUrl", "https://npmmirror.com/mirrors/chromedriver/");
         final int DEFAULT_WIDTH = 1600;
         final int DEFAULT_HEIGHT = 900;
         webDriver = initChromeDriver(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+        System.setProperty("wdm.timeout", "500");
+        System.setProperty("wdm.retryCount", "3");
+        // 设置国内镜像
+        System.setProperty("wdm.chromeDownloadUrl", "https://npmmirror.com/mirrors/chromedriver/");
     }
 
     @PreDestroy
@@ -47,8 +48,8 @@ public class WebScreenshotUtils {
      */
     private static WebDriver initChromeDriver(int width, int height) {
         try {
-            // 自动管理 ChromeDriver
-            WebDriverManager.chromedriver().setup();
+            // 自动管理 ChromeDriver,使用国内镜像
+            WebDriverManager.chromedriver().useMirror().setup();
             // 配置 Chrome 选项
             ChromeOptions options = new ChromeOptions();
             // 无头模式
