@@ -8,8 +8,8 @@ spring:
     redis:
       host: localhost
       port: 6379
-      password:
-      ttl: 3600
+      password: # 没设置用户名，密码则留空
+      ttl: 3600 # 默认过期时间 1小时
       database: 0
   application:
     name: ai-code
@@ -36,8 +36,8 @@ langchain4j:
       log-requests: true
       log-responses: true
       max-retries: 3
-    #      strict-json-schema: true
-    #      response-format: json_object # 结构化输出
+      strict-json-schema: true
+      response-format: json_object # 结构化输出
     # 通用流式聊天 AI 模型配置
     streaming-chat-model:
       base-url: https://api.deepseek.com
